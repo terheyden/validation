@@ -3,7 +3,6 @@ package com.terheyden.valid;
 import javax.annotation.Nonnull;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.annotation.meta.TypeQualifierDefault;
-import javax.validation.constraints.NotNull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,7 +23,10 @@ import java.lang.annotation.RetentionPolicy;
  * https://stackoverflow.com/questions/13310994/set-findbugs-notnull-as-default-for-all-classes-under-a-package
  * https://stackoverflow.com/questions/3550292/what-do-java-annotation-elementtype-constants-mean
  */
-@NotNull
+// Can't specify @NotNull in here, throws:
+//   java: Constraint annotations must not be specified at annotation types,
+//   which are no constraint annotation types themselves.
+// @NotNull
 @Nonnull
 @Documented
 @Retention(RetentionPolicy.RUNTIME)

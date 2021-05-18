@@ -1,19 +1,35 @@
 # Jakarta (Java) Validation Utils
 
-## Spring Boot example
+There are different dependencies for Spring Boot projects and non-Spring projects.
+
+### Spring Boot Maven
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+### Spring Boot example
 
 ```java
-@RestController
 @Validated
+@RestController
+@RequestMapping("/")
 public class MyController {
+
     @GetMapping("/greet")
-    public String greet(@RequestParam @Size(min = 3) String name) {
+    public String greet(
+        @RequestParam @Size(min = 3) String name,
+        @RequestBody @Valid SomeDto body) {
+
         return format("Hello there, %s!", name);
     }
 }
 ```
 
-## Validate bean example
+### Non-Spring - validate bean example
 
 ```java
 public class User {
@@ -38,7 +54,7 @@ User user = new User(id, name, age);
 Validations.validateObj(user);
 ```
 
-## Validating method arguments
+### Validating method arguments
 
 ```java
 /**

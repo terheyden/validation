@@ -12,19 +12,28 @@
     <artifactId>validation</artifactId>
     <name>validation</name>
 
+    <properties>
+        <hibernate.version>7.0.1.Final</hibernate.version>
+    </properties>
+
     <dependencies>
         <!-- Includes the Jakarta Bean Validation API -->
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>7.0.1.Final</version>
+            <version>${hibernate.version}</version>
             <exclusions>
                 <exclusion>
                     <artifactId>validation-api</artifactId>
                     <groupId>javax.validation</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>${hibernate.version}</version>
         </dependency>
         <!-- Required by Validation - Expression Language -->
         <!-- https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->

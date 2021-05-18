@@ -1,6 +1,7 @@
 package com.terheyden.valid;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -71,7 +72,7 @@ public final class Validators {
 
     /**
      * Validating returns a set of violations.
-     * This turns that set into an {@link IllegalStateException}.
+     * This turns that set into an {@link ConstraintViolationException}.
      * Does nothing if the set is empty.
      */
     private static void throwViolations(Set<? extends ConstraintViolation<?>> violations) {
@@ -82,7 +83,7 @@ public final class Validators {
             .collect(Validators::constraintViolationToString)
             .makeString("; ");
 
-        throw new IllegalStateException(errorMsg);
+        throw new ConstraintViolationException(errorMsg, violations);
     }
 
     /**

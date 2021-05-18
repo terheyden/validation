@@ -11,13 +11,39 @@
     <artifactId>validation-javax</artifactId>
     <name>validation-javax</name>
 
+    <properties>
+        <last.javax.version>2.0.1.Final</last.javax.version>
+        <last.javax.hibernate.version>6.2.0.Final</last.javax.hibernate.version>
+        <last.javax.el.version>3.0.3</last.javax.el.version>
+    </properties>
+
     <dependencies>
         <!-- Scope is provided because we assume they're getting validations through Spring -->
         <!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
+            <version>${last.javax.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${last.javax.hibernate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator-annotation-processor</artifactId>
+            <version>${last.javax.hibernate.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Required by Validation - Expression Language -->
+        <!-- https://mvnrepository.com/artifact/org.glassfish/jakarta.el -->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>${last.javax.el.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
