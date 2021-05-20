@@ -18,12 +18,13 @@
     </properties>
 
     <dependencies>
-        <!-- Includes the Jakarta Bean Validation API -->
+        <!-- For testing compat with Jakarta -->
         <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -2,6 +2,8 @@ package com.terheyden.valid;
 
 import java.util.UUID;
 
+import com.terheyden.valid.annotation.Max;
+import com.terheyden.valid.annotation.Min;
 import com.terheyden.valid.annotation.NotEmpty;
 import com.terheyden.valid.annotation.NotNull;
 import com.terheyden.valid.annotation.Pattern;
@@ -16,7 +18,7 @@ public class User {
     private UUID id;
     @NotEmpty
     private String name;
-    @Positive
+    @Positive @Min(3) @Max(100)
     private int age;
     @NotNull
     @Pattern(".+@.+")

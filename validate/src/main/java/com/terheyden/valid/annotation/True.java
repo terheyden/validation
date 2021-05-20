@@ -1,6 +1,5 @@
 package com.terheyden.valid.annotation;
 
-import javax.annotation.Nonnull;
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -16,12 +15,12 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marks a field or method argument as not allowed to be null.
+ * Marks a field or method argument as needing to be "true-ish."
+ * @see TruthUtils
  */
-@Nonnull
 @Documented
 @Retention(RUNTIME)
-@ValidatedBy(NotNullValidator.class)
+@ValidatedBy(TrueValidator.class)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-public @interface NotNull {
+public @interface True {
 }

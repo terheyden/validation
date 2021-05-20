@@ -154,11 +154,40 @@
 
     <profiles>
         <profile>
-            <!-- Use: -Prelease to generate sources and javadocs -->
-            <!-- https://maven.apache.org/plugin-developers/cookbook/attach-source-javadoc-artifacts.html -->
+            <!-- Use: -Prelease to upload to Maven Central with sources and javadocs -->
             <id>release</id>
             <build>
                 <plugins>
+                    <!-- Uploads our JARs to Maven Central staging area -->
+                    <!-- https://central.sonatype.org/publish/publish-maven/ -->
+                    <!-- https://mvnrepository.com/artifact/org.sonatype.plugins/nexus-staging-maven-plugin -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!-- Signs our artifacts for release -->
+                    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-gpg-plugin -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <!-- Attach source code to our JAR -->
                     <!-- https://maven.apache.org/plugins/maven-source-plugin/usage.html -->
                     <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-source-plugin -->
@@ -175,6 +204,7 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- Attach JavaDocs -->
                     <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-javadoc-plugin -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -196,6 +226,20 @@
                     </plugin>
                 </plugins>
             </build>
+
+            <!-- Where we upload our releases -->
+            <!-- https://central.sonatype.org/publish/publish-maven/ -->
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+
         </profile>
     </profiles>
 

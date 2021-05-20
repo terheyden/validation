@@ -11,10 +11,10 @@ public class PositiveOrZeroValidator extends BaseNumberValidator {
     @Override
     protected ValidateResult numberValidate(ValidateContext context, Number number) {
 
-        int intVal = number.intValue();
+        float floatVal = number.floatValue();
 
-        return intVal >= 0
+        return floatVal >= 0.0F - TruthUtils.FLOAT_MARGIN
             ? ValidateResult.success(context)
-            : ValidateResult.fail(context, "Number must be >= 0, but is actually: %s", intVal);
+            : ValidateResult.fail(context, "Number must be >= 0, but is actually: %s", floatVal);
     }
 }

@@ -15,14 +15,16 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marks a field or method argument as required to be greater than or equal to 0.
- * Applies to numbers.
+ * Marks a numeric field or method argument as needing to be at least this value.
  */
 @Documented
 @Retention(RUNTIME)
-@ValidatedBy(TrimValidator.class)
+@ValidatedBy(MaxValidator.class)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-public @interface Trim {
+public @interface Max {
 
-    String value() default "\\s+";
+    /**
+     * The maximum allowed value (inclusive).
+     */
+    long value();
 }

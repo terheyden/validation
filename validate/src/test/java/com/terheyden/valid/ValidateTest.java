@@ -66,4 +66,17 @@ public class ValidateTest {
         ThirdUser badAge = new ThirdUser(ID, NAME, 0, EMAIL);
         assertThrows(ValidationException.class, () -> Validate.validateObj(badAge));
     }
+
+    @Test
+    public void testMinMax() {
+
+        User good = new User(ID, NAME, 10, EMAIL);
+        Validate.validateObj(good);
+
+        User badMin = new User(ID, NAME, 1, EMAIL);
+        assertThrows(ValidationException.class, () -> Validate.validateObj(badMin));
+
+        User badMax = new User(ID, NAME, 101, EMAIL);
+        assertThrows(ValidationException.class, () -> Validate.validateObj(badMax));
+    }
 }
