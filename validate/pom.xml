@@ -13,4 +13,17 @@
     <artifactId>validate</artifactId>
     <name>validate</name>
 
+    <properties>
+        <hibernate.version>7.0.1.Final</hibernate.version>
+    </properties>
+
+    <dependencies>
+        <!-- Includes the Jakarta Bean Validation API -->
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+    </dependencies>
 </project>

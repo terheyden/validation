@@ -2,6 +2,8 @@ package com.terheyden.valid;
 
 import java.util.List;
 
+import com.terheyden.valid.annotation.NotEmpty;
+
 /**
  * MyStatic class.
  */

@@ -1,9 +1,10 @@
-package com.terheyden.valid;
+package com.terheyden.valid.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
-import java.util.Collection;
+
+import com.terheyden.valid.ValidatedBy;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.CONSTRUCTOR;
@@ -14,17 +15,12 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marks a field or method argument as not allowed to be null or empty.
- * Applies to {@link CharSequence} and {@link Collection}s.
+ * Marks a field or method argument as required to be greater than or equal to 0.
+ * Applies to numbers.
  */
 @Documented
 @Retention(RUNTIME)
-@ValidatedBy(PatternValidator.class)
+@ValidatedBy(PositiveOrZeroValidator.class)
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
-public @interface Pattern {
-
-    /**
-     * The regex pattern that must match the value.
-     */
-    String value();
+public @interface PositiveOrZero {
 }

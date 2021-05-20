@@ -11,6 +11,8 @@ import org.eclipse.collections.impl.factory.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.terheyden.valid.annotation.Validator;
+
 import static java.lang.String.format;
 
 /**
@@ -79,8 +81,7 @@ public final class Validate {
         LOG.info("Analyzing {}: {}", objLabel, annotation);
         ValidateContext context = new ValidateContext(annotation, value);
 
-        isValidationAnnotation(annotation)
-            .map(ValidatorRegistry::getOrCreateValidator)
+        isValidatableAnnotation(annotation)
             .map(validator -> validator.validate(context))
             .ifPresent(result -> handleValidationResult(result, objLabel));
     }
@@ -95,13 +96,32 @@ public final class Validate {
     }
 
     /**
-     * Returns the related {@link ValidatedBy} if the given annotation
-     * is validate-related.
+     * Returns the related {@link Validator} if the given annotation
+     * is validatable.
      */
-    private static Optional<ValidatedBy> isValidationAnnotation(Annotation annotation) {
+    private static Optional<Validator> isValidatableAnnotation(Annotation annotation) {
+        return hasValidatedByAnnotation(annotation)
+            .or(() -> has3rdPartyValidator(annotation));
+    }
+
+    /**
+     * Returns the related {@link ValidatedBy}'s validator from the {@link ValidatorRegistry}
+     * if the given annotation is validate-related.
+     */
+    private static Optional<Validator> hasValidatedByAnnotation(Annotation annotation) {
         return Lists.immutable
             .of(annotation.annotationType().getAnnotations())
             .detectOptional(ValidatedBy.class::isInstance)
-            .map(ValidatedBy.class::cast);
+            .map(ValidatedBy.class::cast)
+            .map(ValidatorRegistry::getOrCreateValidator);
+    }
+
+    /**
+     * For compatibility with other validation libs, we keep a registry of validators
+     * for other annotations. This returns the associated validator if one exists
+     * for the given annotation.
+     */
+    private static Optional<Validator> has3rdPartyValidator(Annotation annotation) {
+        return ValidatorRegistry.find3rdPartyValidator(annotation.annotationType());
     }
 }

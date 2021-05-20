@@ -1,5 +1,7 @@
 package com.terheyden.valid;
 
+import com.terheyden.valid.annotation.NotEmpty;
+
 /**
  * Address class.
  */

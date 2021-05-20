@@ -2,15 +2,15 @@ package com.terheyden.valid;
 
 import java.util.UUID;
 
-import com.terheyden.valid.annotation.NotEmpty;
-import com.terheyden.valid.annotation.NotNull;
-import com.terheyden.valid.annotation.Pattern;
-import com.terheyden.valid.annotation.Positive;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 /**
  * Example usage for validating entire objects.
  */
-public class User {
+public class ThirdUser {
 
     @NotNull
     private UUID id;
@@ -18,11 +18,10 @@ public class User {
     private String name;
     @Positive
     private int age;
-    @NotNull
-    @Pattern(".+@.+")
+    @Email
     private String email;
 
-    public User(UUID id, String name, int age, String email) {
+    public ThirdUser(UUID id, String name, int age, String email) {
         this.id   = id;
         this.name = name;
         this.age  = age;
@@ -37,7 +36,7 @@ public class User {
         return id;
     }
 
-    public User id(UUID id) {
+    public ThirdUser id(UUID id) {
         this.id = id;
         return this;
     }
@@ -46,7 +45,7 @@ public class User {
         return name;
     }
 
-    public User name(String name) {
+    public ThirdUser name(String name) {
         this.name = name;
         return this;
     }
@@ -55,7 +54,7 @@ public class User {
         return age;
     }
 
-    public User age(int age) {
+    public ThirdUser age(int age) {
         this.age = age;
         return this;
     }
@@ -64,7 +63,7 @@ public class User {
         return email;
     }
 
-    public User email(String email) {
+    public ThirdUser email(String email) {
         this.email = email;
         return this;
     }
@@ -80,7 +79,7 @@ public class User {
         private String name;
         @Positive
         private int age;
-        @Pattern(".+@.+")
+        @Email
         private String email;
 
         public UserBuilder id(UUID id) {
@@ -103,9 +102,9 @@ public class User {
             return this;
         }
 
-        public User build() {
+        public ThirdUser build() {
             Validate.validateObj(this);
-            return new User(id, name, age, email);
+            return new ThirdUser(id, name, age, email);
         }
     }
 }

@@ -1,6 +1,9 @@
-package com.terheyden.valid;
+package com.terheyden.valid.annotation;
 
 import java.util.Collection;
+
+import com.terheyden.valid.ValidateContext;
+import com.terheyden.valid.ValidateResult;
 
 /**
  * Validates the value is neither null nor empty.

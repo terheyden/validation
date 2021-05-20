@@ -1,4 +1,7 @@
-package com.terheyden.valid;
+package com.terheyden.valid.annotation;
+
+import com.terheyden.valid.ValidateContext;
+import com.terheyden.valid.ValidateResult;
 
 /**
  * PositiveValidator class.

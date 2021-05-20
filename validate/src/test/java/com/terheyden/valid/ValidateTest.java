@@ -36,6 +36,9 @@ public class ValidateTest {
     @Test
     public void testPattern() {
 
+        User good = new User(ID, NAME, 10, EMAIL);
+        Validate.validateObj(good);
+
         User bad = new User(ID, NAME, 10, "bad email");
         assertThrows(ValidationException.class, () -> Validate.validateObj(bad));
     }
@@ -46,5 +49,21 @@ public class ValidateTest {
         MyStatic.staticMethod1(NAME, List.of("a", "b"));
         assertThrows(ValidationException.class, () -> MyStatic.staticMethod1(EMPTY, List.of()));
         assertThrows(ValidationException.class, () -> MyStatic.staticMethod1(NAME, List.of()));
+    }
+
+    @Test
+    public void test3rdParty() {
+
+        ThirdUser good = new ThirdUser(ID, NAME, 10, EMAIL);
+        Validate.validateObj(good);
+
+        ThirdUser badName = new ThirdUser(ID, EMPTY, 10, EMAIL);
+        assertThrows(ValidationException.class, () -> Validate.validateObj(badName));
+
+        ThirdUser badId = new ThirdUser(null, NAME, 10, EMAIL);
+        assertThrows(ValidationException.class, () -> Validate.validateObj(badId));
+
+        ThirdUser badAge = new ThirdUser(ID, NAME, 0, EMAIL);
+        assertThrows(ValidationException.class, () -> Validate.validateObj(badAge));
     }
 }
