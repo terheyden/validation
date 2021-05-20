@@ -2,7 +2,6 @@ package com.terheyden.valid;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 
 import org.eclipse.collections.impl.factory.Lists;
@@ -16,6 +15,8 @@ import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import jakarta.validation.executable.ExecutableValidator;
+
+import static java.lang.String.format;
 
 /**
  * Validators class.
@@ -53,22 +54,24 @@ public final class Validators {
      */
     public static void validateArgs(Object methodClassObj, Object... allMethodArgs) {
 
+        Method thisMethod = findCallingMethod(methodClassObj.getClass(), allMethodArgs);
+        // Finally, we have everything we need to perform method arg validation.
+        throwViolations(EXEC_VALIDATOR.validateParameters(methodClassObj, thisMethod, allMethodArgs));
+    }
+
+    private static Method findCallingMethod(Class<?> methodObjClass, Object... allMethodArgs) {
         // The caller will be right beneath us on the stack,
         // so we look up our frame number and add 1.
         // Make sure this string matches this method's name 👇🏽👇🏽👇🏽
-        String thisMethodName = "validateArgs";
-        int thisStackFrameNum = findStackFrameByMethodName(thisMethodName);
-        int stackFrame = thisStackFrameNum + 1;
+        int thisStackFrameNum = findStackFrameByMethodName("findCallingMethod");
+        int stackFrame = thisStackFrameNum + 2;
         int callingMethodArgCount = allMethodArgs.length;
 
         // We can figure out our caller's method name and instance by walking the stack.
-        Method thisMethod = getStackMethod(
-            methodClassObj.getClass(),
+        return getStackMethod(
+            methodObjClass,
             stackFrame,
-            callingMethodArgCount).get();
-
-        // Finally, we have everything we need to perform method arg validation.
-        throwViolations(EXEC_VALIDATOR.validateParameters(methodClassObj, thisMethod, allMethodArgs));
+            callingMethodArgCount);
     }
 
     /**
@@ -92,7 +95,7 @@ public final class Validators {
      * Convert them into useful strings we can show to the user.
      */
     private static <T> String constraintViolationToString(ConstraintViolation<T> violation) {
-        return String.format("%s: %s %s",
+        return format("%s: %s %s",
             violation.getRootBeanClass().getSimpleName(),
             violation.getPropertyPath().toString(),
             violation.getMessage());
@@ -117,16 +120,19 @@ public final class Validators {
      * Returns the method N number of frames down the stack.
      * Use {@link #dumpStack()} to determine the right frame number.
      */
-    private static Optional<Method> getStackMethod(Class<?> containingClass, int frameNum, int methodArgNum) {
+    private static Method getStackMethod(Class<?> containingClass, int frameNum, int methodArgNum) {
 
         dumpClass(containingClass);
         StackTraceElement frame = Thread.currentThread().getStackTrace()[frameNum];
         String methodName = frame.getMethodName();
+        LOG.debug("Finding stack method[{}]: {}({})", frameNum, methodName, methodArgNum);
 
         return Lists.mutable
             .of(containingClass.getDeclaredMethods())
             .select(method -> method.getParameterCount() == methodArgNum)
-            .detectOptional(method -> method.getName().equals(methodName));
+            .detectOptional(method -> method.getName().equals(methodName))
+            .orElseThrow(() -> new IllegalStateException(format(
+                "Could not find stack method[%d]: %s(%d)", frameNum, methodName, methodArgNum)));
     }
 
     private static int findStackFrameByMethodName(String methodName) {

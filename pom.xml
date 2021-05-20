@@ -11,6 +11,7 @@
     <modules>
         <module>validation</module>
         <module>validation-javax</module>
+        <module>validate</module>
     </modules>
 
     <properties>

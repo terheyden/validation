@@ -41,4 +41,10 @@ public class ValidatorsTest {
         UserRepo repo = new UserRepo();
         Assertions.assertThrows(ConstraintViolationException.class, () -> repo.createUser("", -1));
     }
+
+    @Test
+    public void testStatic() {
+
+        UserRepo.join("hi ", 2);
+    }
 }
