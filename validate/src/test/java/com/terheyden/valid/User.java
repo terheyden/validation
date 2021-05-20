@@ -1,5 +1,7 @@
 package com.terheyden.valid;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import com.terheyden.valid.annotation.Max;
@@ -8,6 +10,7 @@ import com.terheyden.valid.annotation.NotEmpty;
 import com.terheyden.valid.annotation.NotNull;
 import com.terheyden.valid.annotation.Pattern;
 import com.terheyden.valid.annotation.Positive;
+import com.terheyden.valid.annotation.Size;
 
 /**
  * Example usage for validating entire objects.
@@ -18,11 +21,13 @@ public class User {
     private UUID id;
     @NotEmpty
     private String name;
-    @Positive @Min(3) @Max(100)
+    @Positive @Min(3) @Max(100) @Size(min = 3, max = 100)
     private int age;
     @NotNull
     @Pattern(".+@.+")
     private String email;
+    @Size(1) @Min(1) @Pattern("\\d+ .+")
+    private final List<String> addresses = Arrays.asList("123 hi st");
 
     public User(UUID id, String name, int age, String email) {
         this.id   = id;

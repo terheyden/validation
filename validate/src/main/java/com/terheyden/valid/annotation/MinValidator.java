@@ -1,21 +1,21 @@
 package com.terheyden.valid.annotation;
 
 import com.terheyden.valid.ValidateContext;
-import com.terheyden.valid.ValidateResult;
+
+import io.vavr.Tuple;
+import io.vavr.Tuple2;
 
 /**
  * MinValidator class.
  */
-public class MinValidator extends BaseLongValidator {
+public class MinValidator extends BaseSizeValidator {
 
     @Override
-    protected ValidateResult longValidate(ValidateContext context, long number) {
+    protected Tuple2<Long, Long> getMinMax(ValidateContext context) {
 
         Min minAnn = context.annotation();
         long minVal = minAnn.value();
 
-        return number >= minVal
-            ? ValidateResult.success(context)
-            : ValidateResult.fail(context, "Expected minimum value of %d, was actually: %d", minVal, number);
+        return Tuple.of(minVal, Long.MAX_VALUE);
     }
 }
