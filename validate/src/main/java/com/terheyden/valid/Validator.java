@@ -2,5 +2,5 @@ package com.terheyden.valid;
 
 public interface Validator {
 
-    ValidateResult validate(Object val);
+    ValidateResult validate(ValidateContext context);
 }

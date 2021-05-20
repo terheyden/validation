@@ -22,6 +22,7 @@ public class UserRepo {
 
     public static String join(@NotEmpty Object part1, @NotEmpty Object part2) {
 
+        // Not supported.
         Validators.validateArgs(UserRepo.class, part1, part2);
         return part1.toString() + part2.toString();
     }

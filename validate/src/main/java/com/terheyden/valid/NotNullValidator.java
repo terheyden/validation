@@ -1,14 +1,12 @@
 package com.terheyden.valid;
 
-import javax.annotation.Nullable;
-
 /**
  * NotNullValidator class.
  */
-public class NotNullValidator implements Validator {
+public class NotNullValidator extends BaseNotNullValidator {
 
     @Override
-    public ValidateResult validate(@Nullable Object val) {
-        return val == null ? ValidateResult.fail("Value cannot be null") : ValidateResult.success();
+    protected ValidateResult notNullValidate(ValidateContext context, Object value) {
+        return ValidateResult.success(context);
     }
 }

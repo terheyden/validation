@@ -52,11 +52,11 @@ public final class Validators {
      * <p></p>
      * @see <a href="https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#_parameter_constraints" target="_top">parameter_constraints</a>
      */
-    public static void validateArgs(Object methodClassObj, Object... allMethodArgs) {
+    public static void validateArgs(Object classObj, Object... allMethodArgs) {
 
-        Method thisMethod = findCallingMethod(methodClassObj.getClass(), allMethodArgs);
+        Method thisMethod = findCallingMethod(classObj.getClass(), allMethodArgs);
         // Finally, we have everything we need to perform method arg validation.
-        throwViolations(EXEC_VALIDATOR.validateParameters(methodClassObj, thisMethod, allMethodArgs));
+        throwViolations(EXEC_VALIDATOR.validateParameters(classObj, thisMethod, allMethodArgs));
     }
 
     private static Method findCallingMethod(Class<?> methodObjClass, Object... allMethodArgs) {
@@ -111,7 +111,7 @@ public final class Validators {
 
         for (int off = 0; off < stack.length; off++) {
 
-            if (off > 4 && off < stack.length - 5) { continue; }
+            if (off > 9 && off < stack.length - 10) { continue; }
             LOG.info("Stack [{}] = {}", off, stack[off]);
         }
     }
@@ -122,10 +122,10 @@ public final class Validators {
      */
     private static Method getStackMethod(Class<?> containingClass, int frameNum, int methodArgNum) {
 
-        dumpClass(containingClass);
         StackTraceElement frame = Thread.currentThread().getStackTrace()[frameNum];
         String methodName = frame.getMethodName();
         LOG.debug("Finding stack method[{}]: {}({})", frameNum, methodName, methodArgNum);
+        dumpClass(containingClass);
 
         return Lists.mutable
             .of(containingClass.getDeclaredMethods())
@@ -152,6 +152,8 @@ public final class Validators {
     private static void dumpClass(Class<?> classObj) {
         Arrays
             .stream(classObj.getDeclaredMethods())
-            .forEach(method -> LOG.info("Class method => {}", method.getName()));
+            .map(method -> format("%s(%d)", method.getName(), method.getParameterCount()))
+            .sorted()
+            .forEach(methodStr -> LOG.info("Class method => {}", methodStr));
     }
 }

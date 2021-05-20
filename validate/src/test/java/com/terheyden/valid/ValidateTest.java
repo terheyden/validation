@@ -15,21 +15,29 @@ public class ValidateTest {
     private static final String EMPTY = "";
     private static final UUID ID = UUID.randomUUID();
     private static final String NAME = "Cora";
+    private static final String EMAIL = "cora@email.com";
 
     @Test
     public void testObj() {
 
-        User good = new User(ID, NAME, 10);
+        User good = new User(ID, NAME, 10, EMAIL);
         Validate.validateObj(good);
 
-        User badName = new User(ID, EMPTY, 10);
+        User badName = new User(ID, EMPTY, 10, EMAIL);
         assertThrows(ValidationException.class, () -> Validate.validateObj(badName));
 
-        User badId = new User(null, NAME, 10);
+        User badId = new User(null, NAME, 10, EMAIL);
         assertThrows(ValidationException.class, () -> Validate.validateObj(badId));
 
-        User badAge = new User(ID, NAME, 0);
+        User badAge = new User(ID, NAME, 0, EMAIL);
         assertThrows(ValidationException.class, () -> Validate.validateObj(badAge));
+    }
+
+    @Test
+    public void testPattern() {
+
+        User bad = new User(ID, NAME, 10, "bad email");
+        assertThrows(ValidationException.class, () -> Validate.validateObj(bad));
     }
 
     @Test

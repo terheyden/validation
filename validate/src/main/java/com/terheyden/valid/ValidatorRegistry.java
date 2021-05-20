@@ -4,7 +4,8 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Maps;
 
 /**
- * ValidatorRegistry class.
+ * There are a fixed number of validation annotations, so I'm okay with
+ * caching their validators here to minimize object usage.
  */
 public final class ValidatorRegistry {
 

@@ -8,16 +8,19 @@ import java.util.UUID;
 public class User {
 
     @NotNull
-    private final UUID id;
+    private UUID id;
     @NotEmpty
-    private final String name;
+    private String name;
     @Positive
-    private final int age;
+    private int age;
+    @Pattern(".+@.+")
+    private String email;
 
-    public User(UUID id, String name, int age) {
+    public User(UUID id, String name, int age, String email) {
         this.id   = id;
         this.name = name;
         this.age  = age;
+        this.email = email;
     }
 
     public static UserBuilder builder() {
@@ -28,12 +31,36 @@ public class User {
         return id;
     }
 
+    public User id(UUID id) {
+        this.id = id;
+        return this;
+    }
+
     public String name() {
         return name;
     }
 
+    public User name(String name) {
+        this.name = name;
+        return this;
+    }
+
     public int age() {
         return age;
+    }
+
+    public User age(int age) {
+        this.age = age;
+        return this;
+    }
+
+    public String email() {
+        return email;
+    }
+
+    public User email(String email) {
+        this.email = email;
+        return this;
     }
 
     /**
@@ -47,6 +74,8 @@ public class User {
         private String name;
         @Positive
         private int age;
+        @Pattern(".+@.+")
+        private String email;
 
         public UserBuilder id(UUID id) {
             this.id = id;
@@ -63,9 +92,14 @@ public class User {
             return this;
         }
 
+        public UserBuilder email(String email) {
+            this.email = email;
+            return this;
+        }
+
         public User build() {
             Validate.validateObj(this);
-            return new User(id, name, age);
+            return new User(id, name, age, email);
         }
     }
 }

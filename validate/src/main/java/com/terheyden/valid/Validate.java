@@ -41,7 +41,7 @@ public final class Validate {
                 String label = format("%s.%s", objClass.getSimpleName(), field.getName());
 
                 for (Annotation annotation : field.getAnnotations()) {
-                    verifyAnnotation(annotation, fieldVal, label);
+                    validateAnnotation(annotation, fieldVal, label);
                 }
             }
 
@@ -66,7 +66,7 @@ public final class Validate {
             String argLabel = format("%s() arg[%d]", callingMethod.getName(), off);
 
             // Verify each annotation on the method arg.
-            annotations.each(ann -> verifyAnnotation(ann, argVal, argLabel));
+            annotations.each(ann -> validateAnnotation(ann, argVal, argLabel));
         }
     }
 
@@ -74,12 +74,14 @@ public final class Validate {
      * Validate the annotation (if it has a @{@link ValidatedBy} entry)
      * with the given field / arg value.
      */
-    private static void verifyAnnotation(Annotation annotation, Object value, String objLabel) {
+    private static void validateAnnotation(Annotation annotation, Object value, String objLabel) {
 
         LOG.info("Analyzing {}: {}", objLabel, annotation);
-        findValidatedBy(annotation)
+        ValidateContext context = new ValidateContext(annotation, value);
+
+        isValidationAnnotation(annotation)
             .map(ValidatorRegistry::getOrCreateValidator)
-            .map(validator -> validator.validate(value))
+            .map(validator -> validator.validate(context))
             .ifPresent(result -> handleValidationResult(result, objLabel));
     }
 
@@ -92,7 +94,11 @@ public final class Validate {
         throw new ValidationException(format("%s: %s", objLabel, result.message()));
     }
 
-    private static Optional<ValidatedBy> findValidatedBy(Annotation annotation) {
+    /**
+     * Returns the related {@link ValidatedBy} if the given annotation
+     * is validate-related.
+     */
+    private static Optional<ValidatedBy> isValidationAnnotation(Annotation annotation) {
         return Lists.immutable
             .of(annotation.annotationType().getAnnotations())
             .detectOptional(ValidatedBy.class::isInstance)
