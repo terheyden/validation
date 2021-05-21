@@ -13,11 +13,11 @@ import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * Marks a field or method argument as needing to be "false-ish."
- * @see TruthUtils
+ * Marks a field or method argument as able to be set to null.
  */
 @Documented
 @Retention(RUNTIME)
+@javax.annotation.Nullable
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 public @interface Nullable {
 }
